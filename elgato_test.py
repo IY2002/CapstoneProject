@@ -259,17 +259,17 @@ def setup_images(deck):
     global start_button
     global full_logo
 
-    image1 = prep_image('/home/user/CapstoneProject/elgato/thumbs_up.png', deck)
-    image2 = prep_image('/home/user/CapstoneProject/elgato/thumbs_down.png', deck)
-    white_square = prep_image('/home/user/CapstoneProject/elgato/white_square.jpg', deck)
-    red_square = prep_image('/home/user/CapstoneProject/elgato/Solid_red.svg.png', deck)
-    green_square = prep_image('/home/user/CapstoneProject/elgato/green_square.png', deck)
-    blue_square = prep_image('/home/user/CapstoneProject/elgato/blue_square.jpeg', deck)
-    yellow_square = prep_image('/home/user/CapstoneProject/elgato/yellow_square.jpg', deck)
-    next_image = prep_image('/home/user/CapstoneProject/elgato/next_icon.png', deck)
-    prev_image = prep_image('/home/user/CapstoneProject/elgato/prev_icon.png', deck)
-    start_button = prep_image('/home/user/CapstoneProject/elgato/start_icon.png', deck)
-    full_logo = prep_image('/home/user/CapstoneProject/elgato/full_logo.png', deck)
+    image1 = prep_image('/home/user/CapstoneProject/elgato/images/thumbs_up.png', deck)
+    image2 = prep_image('/home/user/CapstoneProject/elgato/images/thumbs_down.png', deck)
+    white_square = prep_image('/home/user/CapstoneProject/elgato/images/white_square.jpg', deck)
+    red_square = prep_image('/home/user/CapstoneProject/elgato/images/Solid_red.svg.png', deck)
+    green_square = prep_image('/home/user/CapstoneProject/elgato/images/green_square.png', deck)
+    blue_square = prep_image('/home/user/CapstoneProject/elgato/images/blue_square.jpeg', deck)
+    yellow_square = prep_image('/home/user/CapstoneProject/elgato/images/yellow_square.jpg', deck)
+    next_image = prep_image('/home/user/CapstoneProject/elgato/images/next_icon.png', deck)
+    prev_image = prep_image('/home/user/CapstoneProject/elgato/images/prev_icon.png', deck)
+    start_button = prep_image('/home/user/CapstoneProject/elgato/images/start_icon.png', deck)
+    full_logo = prep_image('/home/user/CapstoneProject/elgato/images/full_logo.png', deck)
 
 
 
