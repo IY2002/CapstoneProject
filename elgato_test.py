@@ -195,13 +195,20 @@ def prep_image(file_path, streamdeck):
     resized_image = PILHelper.create_scaled_image(streamdeck, image, margins=[0,0,0,0])
     return PILHelper.to_native_format(streamdeck, resized_image)
 
-logo_filenames = ['/home/user/CapstoneProject/elgato/cut_logo/image_part_001.jpg', '/home/user/CapstoneProject/elgato/cut_logo/image_part_002.jpg', 
-                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_003.jpg', '/home/user/CapstoneProject/elgato/cut_logo/image_part_004.jpg',
-                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_005.jpg', '/home/user/CapstoneProject/elgato/cut_logo/image_part_006.jpg', 
-                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_007.jpg', '/home/user/CapstoneProject/elgato/cut_logo/image_part_008.jpg',
-                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_009.jpg', '/home/user/CapstoneProject/elgato/cut_logo/image_part_010.jpg',
-                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_011.jpg', '/home/user/CapstoneProject/elgato/cut_logo/image_part_012.jpg', 
-                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_013.jpg', '/home/user/CapstoneProject/elgato/cut_logo/image_part_014.jpg', 
+logo_filenames = ['/home/user/CapstoneProject/elgato/cut_logo/image_part_001.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_002.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_003.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_004.jpg',
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_005.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_006.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_007.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_008.jpg',
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_009.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_010.jpg',
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_011.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_012.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_013.jpg', 
+                  '/home/user/CapstoneProject/elgato/cut_logo/image_part_014.jpg', 
                   '/home/user/CapstoneProject/elgato/cut_logo/image_part_015.jpg']
             
 def page_helper(deck):
@@ -233,7 +240,6 @@ def page_helper(deck):
                         pages[j][i] = white_square
                 else:
                     pages[j][i] = create_num_image(deck, i)
-
 
 def display_page(deck):
     '''
@@ -270,8 +276,6 @@ def setup_images(deck):
     prev_image = prep_image('/home/user/CapstoneProject/elgato/images/prev_icon.png', deck)
     start_button = prep_image('/home/user/CapstoneProject/elgato/images/start_icon.png', deck)
     full_logo = prep_image('/home/user/CapstoneProject/elgato/images/full_logo.png', deck)
-
-
 
 def main():
     # connect to streamdeck
