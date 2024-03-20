@@ -1,7 +1,7 @@
 from SingletonDeckState import SingletonDeckState
-from pre_image_processing import page_0_row_1, red_page_0_row_1, pages, red_pages
+from page_handler import idle_screen, display_page, next_page, prev_page, page_update, display_row
+from pre_image_processing import pages, red_pages
 import time, threading, os, psutil
-
 deck_state = SingletonDeckState()
 
 def print_memory_usage():
@@ -11,40 +11,7 @@ def print_memory_usage():
     memory_used = memory_info.rss / 1024 / 1024
     print(f"Memory used: {memory_used:.2f} MB")
 
-def page_update():
-    global pages
-    global red_pages
 
-    for i in range(3):
-        pages[0][i+5] = page_0_row_1[deck_state.current_row][i]
-        red_pages[0][i+5] = red_page_0_row_1[deck_state.current_row][i]
-
-def display_page():
-    '''
-    Function to display a page on the StreamDeck.
-    '''
-    page_update()
-
-    for i in range(15):
-        deck_state.deck.set_key_image(i, pages[deck_state.current_page][i])
-
-def next_page():
-    '''
-    Function to move to the next page on the StreamDeck.
-    '''
-    deck_state.current_page = (deck_state.current_page + 1) % 2
-    display_page()
-
-def prev_page():
-    '''
-    Function to move to the previous page on the StreamDeck.
-    '''
-    deck_state.current_page = (deck_state.current_page - 1) % 2
-    display_page()
-
-def display_row():
-    for i in range(4):
-        deck_state.deck.set_key_image(i+5, pages[deck_state.current_page][i+5])
 
 def key_change_callback(deck, key, state):
     '''
@@ -64,13 +31,6 @@ def key_change_callback(deck, key, state):
             return
         else:
             key_helper(key)
-
-def idle_screen():
-    '''
-    Function to display the idle screen on the StreamDeck.
-    '''
-    deck_state.current_page = 2
-    display_page()
 
 def time_waiting(key):
     # Simulate a long-running task with a loop
