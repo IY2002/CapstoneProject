@@ -11,8 +11,6 @@ def print_memory_usage():
     memory_used = memory_info.rss / 1024 / 1024
     print(f"Memory used: {memory_used:.2f} MB")
 
-
-
 def key_change_callback(deck, key, state):
     '''
     Function to handle key presses on the StreamDeck.
