@@ -1,16 +1,9 @@
 from SingletonDeckState import SingletonDeckState
 from page_handler import idle_screen, display_page, next_page, prev_page, page_update, display_row
 from pre_image_processing import pages, red_pages, black_square
-import time, threading, os, psutil
+import time, threading
 
 deck_state = SingletonDeckState()
-
-def print_memory_usage():
-    process = psutil.Process(os.getpid())
-    memory_info = process.memory_info()
-    # Convert bytes to megabytes
-    memory_used = memory_info.rss / 1024 / 1024
-    print(f"Memory used: {memory_used:.2f} MB")
 
 def key_change_callback(deck, key, state):
     '''

@@ -1,8 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from StreamDeck.ImageHelpers import PILHelper
 from SingletonDeckState import SingletonDeckState
-import os, psutil
-
 
 thumbs_up = None
 thumbs_down = None
@@ -22,13 +20,6 @@ pages = [[None for _ in range(15)] for _ in range(3)]
 red_pages = [[None for _ in range(15)] for _ in range(3)]
 
 deck_state = SingletonDeckState()
-
-def print_memory_usage():
-    process = psutil.Process(os.getpid())
-    memory_info = process.memory_info()
-    # Convert bytes to megabytes
-    memory_used = memory_info.rss / 1024 / 1024
-    print(f"Memory used: {memory_used:.2f} MB")
 
 def prep_image(file_path):
     '''
@@ -245,4 +236,3 @@ def row_setup(boxSizes):
 
     deck_state.current_row = 0
                 
-    print_memory_usage()
