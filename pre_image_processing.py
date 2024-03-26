@@ -3,6 +3,7 @@ from StreamDeck.ImageHelpers import PILHelper
 from SingletonDeckState import SingletonDeckState
 import os, psutil
 
+
 thumbs_up = None
 thumbs_down = None
 white_square = None
@@ -19,10 +20,6 @@ full_logo = None
 pages = [[None for _ in range(15)] for _ in range(3)]
 
 red_pages = [[None for _ in range(15)] for _ in range(3)]
-
-page_0_row_1 = [[None for _ in range(3)] for _ in range(3)]
-
-red_page_0_row_1 = [[None for _ in range(3)] for _ in range(3)]
 
 deck_state = SingletonDeckState()
 
@@ -162,8 +159,8 @@ def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], numAddDocs=3, 
             pages[2][j] = format_image(prep_image('./cut_logo/image_part_0' + str(j+1) + '.jpg'))
 
         if j >= 5 and j < 8:
-            pages[0][j] = page_0_row_1[0][j-5]
-            red_pages[0][j] = red_page_0_row_1[0][j-5]
+            pages[0][j] = deck_state.box_row[0][j-5]
+            red_pages[0][j] = deck_state.red_box_row[0][j-5]
 
             if numAddDocs >= 2 and j - 4 - numDocPrinters <= 0:
                 pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13))
@@ -231,16 +228,21 @@ def row_setup(boxSizes):
     '''
     Function to setup the rows for the StreamDeck.
     '''
-    global page_0_row_1
-    global red_page_0_row_1
+    num_rows = len(boxSizes) // 3 if len(boxSizes) % 3 == 0 else len(boxSizes) // 3 + 1
 
-    for i in range(len(boxSizes)//3 + 1):
+    deck_state.box_row = [[None for _ in range(3)] for _ in range(num_rows)]
+    deck_state.red_box_row = [[None for _ in range(3)] for _ in range(num_rows)]
+
+    for i in range(num_rows):
         for j in range(3):
-            if ((i) * 3) + j + 1 <= len(boxSizes):
-                page_0_row_1[i][j] = format_image(create_text_overlay('./images/box.png', boxSizes[(i*3) + j], font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
-                red_page_0_row_1[i][j] = format_image(apply_red_hue(create_text_overlay('./images/box.png', boxSizes[(i*3) + j], font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
+            if (i * 3) + j < len(boxSizes):
+                text = boxSizes[(i*3) + j]
+                deck_state.box_row[i][j] = format_image(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
+                deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
             else:
-                page_0_row_1[i][j] = black_square
-                red_page_0_row_1[i][j] = black_square
+                deck_state.box_row[i][j] = black_square
+                deck_state.red_box_row[i][j] = black_square
+
+    deck_state.current_row = 0
                 
     print_memory_usage()

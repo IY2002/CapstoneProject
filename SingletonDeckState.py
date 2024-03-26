@@ -10,5 +10,6 @@ class SingletonDeckState:
             cls._instance.current_row = 0
             cls._instance.process_input = True
             cls._instance.deck = connect_to_elgato()
-
+            cls._instance.box_row = []
+            cls._instance.red_box_row = []
         return cls._instance

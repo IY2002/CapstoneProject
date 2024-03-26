@@ -1,6 +1,6 @@
 from SingletonDeckState import SingletonDeckState
 from page_handler import idle_screen, display_page, next_page, prev_page, page_update, display_row
-from pre_image_processing import pages, red_pages, black_square, page_0_row_1
+from pre_image_processing import pages, red_pages, black_square
 import time, threading, os, psutil
 
 deck_state = SingletonDeckState()
@@ -43,7 +43,7 @@ def key_helper(key):
     if key == 4 or key == 9 or pages[deck_state.current_page][key] == black_square:
         return
     elif deck_state.current_page == 0 and key == 8:
-        deck_state.current_row = (deck_state.current_row + 1) % (len(page_0_row_1) - 1)
+        deck_state.current_row = (deck_state.current_row + 1) % (len(deck_state.box_row))
         page_update()
         display_row()
     else:

@@ -1,5 +1,5 @@
 from demo2 import setup
-from page_handler import idle_screen, unidle_screen
+from page_handler import idle_screen, unidle_screen, display_page
 from pre_image_processing import page_setup
 import flask 
 from flask import request, jsonify
@@ -18,6 +18,7 @@ def demo():
 
     if data["status"] == "open":
         page_setup(numLabelPrinters=numLabelPrinters, numDocPrinters=numDocPrinters, numAddDocs=numAddDocs, boxSizes=boxSizes)
+        display_page()
         unidle_screen()
 
     elif data["status"] == "closed":

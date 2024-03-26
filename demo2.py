@@ -18,12 +18,11 @@ def setup():
     Function to setup the StreamDeck.
     '''
     image_setup()
-    page_setup(numLabelPrinters=3, numDocPrinters=3, numAddDocs=2)
+    page_setup(numLabelPrinters=4, numDocPrinters=4, numAddDocs=3)
     deck_state.deck.open()
     deck_state.deck.set_brightness(100)
     deck_state.deck.set_key_callback(key_change_callback)
-    # idle_screen()
-    display_page()
+    idle_screen()
     print_memory_usage()
     
     try:
