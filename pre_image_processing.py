@@ -46,18 +46,18 @@ def image_setup():
     global full_logo
     global black_square
 
-    thumbs_up = format_image(prep_image('./images/thumbs_up.png'))
-    thumbs_down = format_image(prep_image('./images/thumbs_down.png'))
-    white_square = format_image(prep_image('./images/white_square.jpg'))
-    red_square = format_image(prep_image('./images/Solid_red.svg.png'))
-    green_square = format_image(prep_image('./images/green_square.png'))
-    blue_square = format_image(prep_image('./images/blue_square.jpeg'))
-    yellow_square = format_image(prep_image('./images/yellow_square.jpg'))
-    next_image = format_image(prep_image('./images/next_icon.png'))
-    prev_image = format_image(prep_image('./images/prev_icon.png'))
-    start_button = format_image(prep_image('./images/start_icon.png'))
-    full_logo = format_image(prep_image('./images/full_logo.png'))
-    black_square = format_image(prep_image('./images/black_square.png'))
+    thumbs_up = format_image(prep_image('/home/user/CapstoneProject/elgato/images/thumbs_up.png'))
+    thumbs_down = format_image(prep_image('/home/user/CapstoneProject/elgato/images/thumbs_down.png'))
+    white_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/white_square.jpg'))
+    red_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/Solid_red.svg.png'))
+    green_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/green_square.png'))
+    blue_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/blue_square.jpeg'))
+    yellow_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/yellow_square.jpg'))
+    next_image = format_image(prep_image('/home/user/CapstoneProject/elgato/images/next_icon.png'))
+    prev_image = format_image(prep_image('/home/user/CapstoneProject/elgato/images/prev_icon.png'))
+    start_button = format_image(prep_image('/home/user/CapstoneProject/elgato/images/start_icon.png'))
+    full_logo = format_image(prep_image('/home/user/CapstoneProject/elgato/images/full_logo.png'))
+    black_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/black_square.png'))
 
 def apply_red_hue(image, intensity=0.5):
     """
@@ -83,7 +83,7 @@ def format_image(image):
     '''
     return PILHelper.to_native_format(deck_state.deck, image)
 
-def create_text_overlay(image_path, text_to_overlay, font_path="./Copyduck.ttf", font_size=18, font_color='white', font_y_offset=0, subtext=None, subtext_font_size=12, subtext_font_color='white', apply_red_hue=False):
+def create_text_overlay(image_path, text_to_overlay, font_path="/home/user/CapstoneProject/elgato/Copyduck.ttf", font_size=18, font_color='white', font_y_offset=0, subtext=None, subtext_font_size=12, subtext_font_color='white', apply_red_hue=False):
     '''
     Overlay the specified text onto the image at the given path. If apply_red_hue is True, adds a red hue to the entire image including the text.
     '''
@@ -134,7 +134,7 @@ def calculate_text_position(draw, image, text, font, y_offset=0):
     text_y = ((image.height - text_height) / 2) - y_offset
     return text_x, text_y
 
-def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], numAddDocs=3, numDocPrinters=4, numLabelPrinters=4):
+def page_setup(boxSizes=["4x4X4", "4X6X8", "2X6X8", "3X7X8", "5X5X6"], numAddDocs=3, numDocPrinters=4, numLabelPrinters=4):
     '''
     Function to setup the pages for the StreamDeck.
     '''
@@ -145,62 +145,62 @@ def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], numAddDocs=3, 
     for j in range(15):
 
         if j <= 8:
-            pages[2][j] = format_image(prep_image('./cut_logo/image_part_00' + str(j+1) + '.jpg'))
+            pages[2][j] = format_image(prep_image('/home/user/CapstoneProject/elgato/cut_logo/image_part_00' + str(j+1) + '.jpg'))
         else:
-            pages[2][j] = format_image(prep_image('./cut_logo/image_part_0' + str(j+1) + '.jpg'))
+            pages[2][j] = format_image(prep_image('/home/user/CapstoneProject/elgato/cut_logo/image_part_0' + str(j+1) + '.jpg'))
 
         if j >= 5 and j < 8:
             pages[0][j] = deck_state.box_row[0][j-5]
             red_pages[0][j] = deck_state.red_box_row[0][j-5]
 
             if numAddDocs >= 2 and j - 4 - numDocPrinters <= 0:
-                pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13))
-                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13)))
+                pages[1][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 2", font_size=18,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13))
+                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 2", font_size=18,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13)))
             else:
                 pages[1][j] = black_square
                 red_pages[1][j] = black_square
 
         elif j == 8:
             if len(boxSizes) > 3:
-                pages[0][j] = format_image(create_text_overlay('./images/box.png', "Next", font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7'))
-                red_pages[0][j] = format_image(apply_red_hue(create_text_overlay('./images/box.png', "Next", font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7')))
+                pages[0][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', "Next", font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7'))
+                red_pages[0][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', "Next", font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7')))
             else:
                 pages[0][j] = black_square
                 red_pages[0][j] = black_square
 
             if numAddDocs >= 2 and j - 4 - numDocPrinters <= 0:
-                pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13))
-                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13)))
+                pages[1][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 2", font_size=18,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13))
+                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 2", font_size=18,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13)))
             else:
                 pages[1][j] = black_square
                 red_pages[1][j] = black_square
 
         elif j >= 0 and j < 5:
             if j + 1 - numLabelPrinters <= 0:
-                pages[0][j] = format_image(create_text_overlay('./images/page_icon.png', "Picklist", font_size=16,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j + 1), subtext_font_size=13))
-                red_pages[0][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Picklist", font_size=16,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j + 1), subtext_font_size=13)))
+                pages[0][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Picklist", font_size=16,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j + 1), subtext_font_size=13))
+                red_pages[0][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Picklist", font_size=16,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j + 1), subtext_font_size=13)))
             else:
                 pages[0][j] = black_square
                 red_pages[0][j] = black_square
 
             if numAddDocs >= 1 and j + 1 - numDocPrinters <= 0:
-                pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 1", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13))
-                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 1", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13)))
+                pages[1][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 1", font_size=18,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13))
+                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 1", font_size=18,font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13)))
             else:
                 pages[1][j] = black_square
                 red_pages[1][j] = black_square
 
         elif j >=10 and j < 14:
             if j - 9 - numLabelPrinters <= 0:
-                pages[0][j] = format_image(create_text_overlay('./images/label_icon.png', "Shipping", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13))
-                red_pages[0][j] = format_image(apply_red_hue(create_text_overlay('./images/label_icon.png', "Shipping", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13)))
+                pages[0][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/label_icon.png', "Shipping", font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13))
+                red_pages[0][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/label_icon.png', "Shipping", font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13)))
             else:
                 pages[0][j] = black_square
                 red_pages[0][j] = black_square
 
             if numAddDocs >= 3 and j - 9 - numDocPrinters <= 0:
-                pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 3", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13))   
-                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 3", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13)))      
+                pages[1][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 3", font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13))   
+                red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/page_icon.png', "Doc. 3", font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13)))      
             else:
                 pages[1][j] = black_square
                 red_pages[1][j] = black_square
@@ -228,8 +228,8 @@ def row_setup(boxSizes):
         for j in range(3):
             if (i * 3) + j < len(boxSizes):
                 text = boxSizes[(i*3) + j]
-                deck_state.box_row[i][j] = format_image(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
-                deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
+                deck_state.box_row[i][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', text_to_overlay=text, font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
+                deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', text_to_overlay=text, font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
             else:
                 deck_state.box_row[i][j] = black_square
                 deck_state.red_box_row[i][j] = black_square

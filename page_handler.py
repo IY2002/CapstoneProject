@@ -8,7 +8,7 @@ def idle_screen():
     Function to display the idle screen on the StreamDeck.
     '''
     deck_state.current_page = 2
-    deck_state.process_input = False
+    # deck_state.process_input = False
     display_page()
 
 def unidle_screen():
@@ -17,7 +17,7 @@ def unidle_screen():
     '''
     deck_state.current_page = 0
     deck_state.current_row = 0
-    deck_state.process_input = True
+    # deck_state.process_input = True
     display_page()
 
 def page_update():
