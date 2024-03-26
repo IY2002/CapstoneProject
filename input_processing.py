@@ -1,7 +1,8 @@
 from SingletonDeckState import SingletonDeckState
 from page_handler import idle_screen, display_page, next_page, prev_page, page_update, display_row
-from pre_image_processing import pages, red_pages
+from pre_image_processing import pages, red_pages, black_square, page_0_row_1
 import time, threading, os, psutil
+
 deck_state = SingletonDeckState()
 
 def print_memory_usage():
@@ -32,17 +33,17 @@ def key_change_callback(deck, key, state):
 
 def time_waiting(key):
     # Simulate a long-running task with a loop
-    time.sleep(3)
+    time.sleep(1.5)
     
     # Once the task is done, set process_input back to True
     deck_state.deck.set_key_image(key, pages[deck_state.current_page][key])
     deck_state.process_input = True
 
 def key_helper(key):
-    if key == 4 or key == 9:
+    if key == 4 or key == 9 or pages[deck_state.current_page][key] == black_square:
         return
     elif deck_state.current_page == 0 and key == 8:
-        deck_state.current_row = (deck_state.current_row + 1) % 3
+        deck_state.current_row = (deck_state.current_row + 1) % (len(page_0_row_1) - 1)
         page_update()
         display_row()
     else:

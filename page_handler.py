@@ -1,6 +1,7 @@
 from pre_image_processing import page_0_row_1, red_page_0_row_1, pages, red_pages
 from SingletonDeckState import SingletonDeckState   
 
+from pre_image_processing import prep_image, format_image, create_text_overlay, apply_red_hue
 deck_state = SingletonDeckState()
 
 def idle_screen():
@@ -10,11 +11,18 @@ def idle_screen():
     deck_state.current_page = 2
     display_page()
 
+def unidle_screen():
+    '''
+    Function to unidle the display of the StreamDeck.
+    '''
+    deck_state.current_page = 0
+    display_page()
+
 def page_update():
     global pages
     global red_pages
 
-    for i in range(3):
+    for i in range(len(page_0_row_1[deck_state.current_row])):
         pages[0][i+5] = page_0_row_1[deck_state.current_row][i]
         red_pages[0][i+5] = red_page_0_row_1[deck_state.current_row][i]
 
