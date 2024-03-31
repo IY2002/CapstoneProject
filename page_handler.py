@@ -1,5 +1,7 @@
 from SingletonDeckState import SingletonDeckState   
 from pre_image_processing import black_square
+import time
+import concurrent.futures
 
 deck_state = SingletonDeckState()
 
@@ -19,7 +21,7 @@ def unidle_screen():
     deck_state.current_picklist_row = 0
     deck_state.current_shipping_row = 0
     deck_state.process_input = True
-    display_page()
+    # display_page()
 
 def page_box_update():
     for i in range(3):
@@ -40,22 +42,19 @@ def display_page(idle=False):
     '''
     Function to display a page on the StreamDeck.
     '''
-
     if idle:
         for i in range(15):
             deck_state.deck.set_key_image(i, deck_state.idle_pages[i])
         return
 
-    if deck_state.current_page == 0:
-        page_box_update()
-        page_picklist_update()
-        page_shipping_update()
-
     for i in range(15):
+        loop_start_time = time.time()
         if deck_state.pages[deck_state.current_page][i] == None:
             deck_state.deck.set_key_image(i, black_square)
+            print("Time taken to display black square: ", time.time() - loop_start_time)
         else:
             deck_state.deck.set_key_image(i, deck_state.pages[deck_state.current_page][i])
+            print("Time taken to display image: ", time.time() - loop_start_time)
 
 def reset_rows():
     '''

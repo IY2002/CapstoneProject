@@ -4,25 +4,34 @@ from pre_image_processing import page_setup
 import flask 
 from flask import request, jsonify
 import threading
+import time
 
 app = flask.Flask(__name__)
 
 @app.route('/demo', methods=['POST'])
 def demo():
+    real_start = time.time()
+    start_time = time.time()
     data = request.json
 
-    docPrinters = data["docPrinters"]
-    labelPrinters = data["labelPrinters"]
-    addDocs = data["addDocs"]
-    boxSizes = data["boxSizes"]
-
     if data["status"] == "open":
+        docPrinters = data["docPrinters"]
+        labelPrinters = data["labelPrinters"]
+        addDocs = data["addDocs"]
+        boxSizes = data["boxSizes"]
+
         page_setup(boxSizes=boxSizes, docPrinters=docPrinters, labelPrinters=labelPrinters, addDocs=addDocs)
-        display_page()
+        print("time to setup: ", time.time() - start_time)
+
+        start_time = time.time()
         unidle_screen()
+        print("time to unidle: ", time.time() - start_time)
+
 
     elif data["status"] == "closed":
         idle_screen()   
+
+    print("Time taken: ", time.time() - real_start)
 
     return jsonify({"status": "success"})
 

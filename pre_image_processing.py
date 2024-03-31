@@ -1,6 +1,9 @@
 from PIL import Image, ImageDraw, ImageFont
 from StreamDeck.ImageHelpers import PILHelper
 from SingletonDeckState import SingletonDeckState
+import time
+from concurrent.futures import ThreadPoolExecutor
+import threading
 
 thumbs_up = None
 thumbs_down = None
@@ -42,18 +45,18 @@ def image_setup():
     global full_logo
     global black_square
 
-    thumbs_up = format_image(prep_image('/home/user/CapstoneProject/elgato/images/thumbs_up.png'))
-    thumbs_down = format_image(prep_image('/home/user/CapstoneProject/elgato/images/thumbs_down.png'))
-    white_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/white_square.jpg'))
-    red_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/Solid_red.svg.png'))
-    green_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/green_square.png'))
-    blue_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/blue_square.jpeg'))
-    yellow_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/yellow_square.jpg'))
-    next_image = format_image(prep_image('/home/user/CapstoneProject/elgato/images/next_icon.png'))
-    prev_image = format_image(prep_image('/home/user/CapstoneProject/elgato/images/prev_icon.png'))
-    start_button = format_image(prep_image('/home/user/CapstoneProject/elgato/images/start_icon.png'))
-    full_logo = format_image(prep_image('/home/user/CapstoneProject/elgato/images/full_logo.png'))
-    black_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/black_square.png'))
+    thumbs_up = format_image(prep_image('./images/thumbs_up.png'))
+    thumbs_down = format_image(prep_image('./images/thumbs_down.png'))
+    white_square = format_image(prep_image('./images/white_square.jpg'))
+    red_square = format_image(prep_image('./images/Solid_red.svg.png'))
+    green_square = format_image(prep_image('./images/green_square.png'))
+    blue_square = format_image(prep_image('./images/blue_square.jpeg'))
+    yellow_square = format_image(prep_image('./images/yellow_square.jpg'))
+    next_image = format_image(prep_image('./images/next_icon.png'))
+    prev_image = format_image(prep_image('./images/prev_icon.png'))
+    start_button = format_image(prep_image('./images/start_icon.png'))
+    full_logo = format_image(prep_image('./images/full_logo.png'))
+    black_square = format_image(prep_image('./images/black_square.png'))
 
 def apply_red_hue(image, intensity=0.5):
     """
@@ -79,7 +82,7 @@ def format_image(image):
     '''
     return PILHelper.to_native_format(deck_state.deck, image)
 
-def create_text_overlay(image_path, text_to_overlay, font_path="/home/user/CapstoneProject/elgato/Copyduck.ttf", font_size=18, font_color='white', font_y_offset=0, subtext=None, subtext_font_size=12, subtext_font_color='white', apply_red_hue=False):
+def create_text_overlay(image_path, text_to_overlay, font_path="./Copyduck.ttf", font_size=18, font_color='white', font_y_offset=0, subtext=None, subtext_font_size=12, subtext_font_color='white', apply_red_hue=False):
     '''
     Overlay the specified text onto the image at the given path. If apply_red_hue is True, adds a red hue to the entire image including the text.
     '''
@@ -180,7 +183,8 @@ def first_page_setup(labelPrinters, boxSizes):
             else:
                 deck_state.pages[0][j] = None
                 deck_state.red_pages[0][j] = None
-    
+
+        deck_state.deck.set_key_image(j, black_square if deck_state.pages[0][j]==None else deck_state.pages[0][j])
     return
 
 def utility_buttons_setup(num_pages):
@@ -192,24 +196,7 @@ def utility_buttons_setup(num_pages):
         deck_state.pages[i][9] = prev_image
         deck_state.pages[i][14] = full_logo
 
-def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], labelPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], addDocs=["Doc. 1", "Doc. 2", "Doc. 3"]):
-    '''
-    Function to setup the pages for the StreamDeck.
-    '''
-    box_row_setup(boxSizes)
-    shipping_row_setup(labelPrinters)
-    picklist_row_setup(labelPrinters)
-
-    num_pages = 1
-    num_pages += len(addDocs) // 3 if len(addDocs) % 3 == 0 else len(addDocs) // 3 + 1
-
-    deck_state.pages = [[None for _ in range(15)] for _ in range(num_pages)]
-    deck_state.red_pages = [[None for _ in range(15)] for _ in range(num_pages)]
-
-    utility_buttons_setup(num_pages)
-
-    first_page_setup(labelPrinters, boxSizes)
-    
+def setup_doc_pages(docPrinters, addDocs):
     for j in range(15):
         if j >= 0 and j < 3:
             if len(addDocs) >= 1 and j + 1 - len(docPrinters) <= 0:
@@ -259,6 +246,54 @@ def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["
                 deck_state.pages[1][j] = None
                 deck_state.red_pages[1][j] = None
 
+def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], labelPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], addDocs=["Doc. 1", "Doc. 2", "Doc. 3"]):
+    '''
+    Function to setup the pages for the StreamDeck.
+    '''
+    start_time = time.time()
+
+    # Use ThreadPoolExecutor to run setup functions in parallel
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        future_box = executor.submit(box_row_setup, boxSizes)
+        future_shipping = executor.submit(shipping_row_setup, labelPrinters)
+        future_picklist = executor.submit(picklist_row_setup, labelPrinters)
+
+        # Wait for each future to complete and print the time
+        future_box.result()
+        print("Time to setup box row: ", time.time() - start_time)
+        future_shipping.result()
+        print("Time to setup shipping row: ", time.time() - start_time)
+        future_picklist.result()
+        print("Time to setup picklist row: ", time.time() - start_time)
+
+    num_pages = 1
+    num_pages += len(addDocs) // 3 if len(addDocs) % 3 == 0 else len(addDocs) // 3 + 1
+
+    deck_state.pages = [[None for _ in range(15)] for _ in range(num_pages)]
+    deck_state.red_pages = [[None for _ in range(15)] for _ in range(num_pages)]
+
+    utility_buttons_setup(num_pages)
+
+    start_time = time.time()
+    first_page_setup(labelPrinters, boxSizes)
+    print("time to setup first page: ", time.time() - start_time)
+    
+    # setup_doc_pages(docPrinters, addDocs)
+    # print("time to setup rest of pages: ", time.time() - start_time)
+
+    # with ThreadPoolExecutor(max_workers=2) as executor:
+    #     future_first_page = executor.submit(first_page_setup, labelPrinters, boxSizes)
+    #     future_doc_pages = executor.submit(setup_doc_pages, docPrinters, addDocs)
+
+    #     future_first_page.result()
+    #     print("Time to setup first page: ", time.time() - start_time)
+    #     future_doc_pages.result()
+    #     print("Time to setup doc pages: ", time.time() - start_time)
+
+    threading.Thread(target=setup_doc_pages, args=(docPrinters, addDocs)).start()
+
+    return
+
 def box_row_setup(boxSizes):
     '''
     Function to setup the rows for the StreamDeck.
@@ -272,8 +307,8 @@ def box_row_setup(boxSizes):
         for j in range(3):
             if (i * 3) + j < len(boxSizes):
                 text = boxSizes[(i*3) + j]
-                deck_state.box_row[i][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', text_to_overlay=text, font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
-                deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', text_to_overlay=text, font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
+                deck_state.box_row[i][j] = format_image(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='./OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
+                deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='./OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
             else:
                 deck_state.box_row[i][j] = None
                 deck_state.red_box_row[i][j] = None
