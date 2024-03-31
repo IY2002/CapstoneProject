@@ -11,18 +11,18 @@ app = flask.Flask(__name__)
 def demo():
     data = request.json
 
-    numDocPrinters = data["numDocPrinters"]
-    numLabelPrinters = data["numLabelPrinters"]
-    numAddDocs = data["numAddDocs"]
+    docPrinters = data["docPrinters"]
+    labelPrinters = data["labelPrinters"]
+    addDocs = data["addDocs"]
     boxSizes = data["boxSizes"]
 
     if data["status"] == "open":
-        page_setup(numLabelPrinters=numLabelPrinters, numDocPrinters=numDocPrinters, numAddDocs=numAddDocs, boxSizes=boxSizes)
+        page_setup(boxSizes=boxSizes, docPrinters=docPrinters, labelPrinters=labelPrinters, addDocs=addDocs)
         display_page()
         unidle_screen()
 
     elif data["status"] == "closed":
-        idle_screen()
+        idle_screen()   
 
     return jsonify({"status": "success"})
 
