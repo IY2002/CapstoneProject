@@ -42,18 +42,18 @@ def image_setup():
     global full_logo
     global black_square
 
-    thumbs_up = format_image(prep_image('./images/thumbs_up.png'))
-    thumbs_down = format_image(prep_image('./images/thumbs_down.png'))
-    white_square = format_image(prep_image('./images/white_square.jpg'))
-    red_square = format_image(prep_image('./images/Solid_red.svg.png'))
-    green_square = format_image(prep_image('./images/green_square.png'))
-    blue_square = format_image(prep_image('./images/blue_square.jpeg'))
-    yellow_square = format_image(prep_image('./images/yellow_square.jpg'))
-    next_image = format_image(prep_image('./images/next_icon.png'))
-    prev_image = format_image(prep_image('./images/prev_icon.png'))
-    start_button = format_image(prep_image('./images/start_icon.png'))
-    full_logo = format_image(prep_image('./images/full_logo.png'))
-    black_square = format_image(prep_image('./images/black_square.png'))
+    thumbs_up = format_image(prep_image('/home/user/CapstoneProject/elgato/images/thumbs_up.png'))
+    thumbs_down = format_image(prep_image('/home/user/CapstoneProject/elgato/images/thumbs_down.png'))
+    white_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/white_square.jpg'))
+    red_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/Solid_red.svg.png'))
+    green_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/green_square.png'))
+    blue_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/blue_square.jpeg'))
+    yellow_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/yellow_square.jpg'))
+    next_image = format_image(prep_image('/home/user/CapstoneProject/elgato/images/next_icon.png'))
+    prev_image = format_image(prep_image('/home/user/CapstoneProject/elgato/images/prev_icon.png'))
+    start_button = format_image(prep_image('/home/user/CapstoneProject/elgato/images/start_icon.png'))
+    full_logo = format_image(prep_image('/home/user/CapstoneProject/elgato/images/full_logo.png'))
+    black_square = format_image(prep_image('/home/user/CapstoneProject/elgato/images/black_square.png'))
 
 def apply_red_hue(image, intensity=0.5):
     """
@@ -79,7 +79,7 @@ def format_image(image):
     '''
     return PILHelper.to_native_format(deck_state.deck, image)
 
-def create_text_overlay(image_path, text_to_overlay, font_path="./Copyduck.ttf", font_size=18, font_color='white', font_y_offset=0, subtext=None, subtext_font_size=12, subtext_font_color='white', apply_red_hue=False):
+def create_text_overlay(image_path, text_to_overlay, font_path="/home/user/CapstoneProject/elgato/Copyduck.ttf", font_size=18, font_color='white', font_y_offset=0, subtext=None, subtext_font_size=12, subtext_font_color='white', apply_red_hue=False):
     '''
     Overlay the specified text onto the image at the given path. If apply_red_hue is True, adds a red hue to the entire image including the text.
     '''
@@ -272,8 +272,8 @@ def box_row_setup(boxSizes):
         for j in range(3):
             if (i * 3) + j < len(boxSizes):
                 text = boxSizes[(i*3) + j]
-                deck_state.box_row[i][j] = format_image(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
-                deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
+                deck_state.box_row[i][j] = format_image(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', text_to_overlay=text, font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
+                deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('/home/user/CapstoneProject/elgato/images/box.png', text_to_overlay=text, font_size=16, font_path='/home/user/CapstoneProject/elgato/OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
             else:
                 deck_state.box_row[i][j] = None
                 deck_state.red_box_row[i][j] = None
@@ -301,7 +301,6 @@ def shipping_row_setup(labelPrinters):
                 deck_state.red_shipping_row[i][j] = None
 
     deck_state.current_row = 0
-
 def picklist_row_setup(labelPrinters):
     '''
     Function to setup the picklist rows for the StreamDeck.
@@ -321,3 +320,4 @@ def picklist_row_setup(labelPrinters):
             else:
                 deck_state.picklist_row[i][j] = None
                 deck_state.red_picklist_row[i][j] = None
+                
