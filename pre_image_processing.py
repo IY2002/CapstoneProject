@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from StreamDeck.ImageHelpers import PILHelper
 from SingletonDeckState import SingletonDeckState
-import time
 from concurrent.futures import ThreadPoolExecutor
 import threading
 
@@ -184,6 +183,7 @@ def first_page_setup(labelPrinters, boxSizes):
                 deck_state.pages[0][j] = None
                 deck_state.red_pages[0][j] = None
 
+    for j in range(15):
         deck_state.deck.set_key_image(j, black_square if deck_state.pages[0][j]==None else deck_state.pages[0][j])
     return
 
@@ -250,21 +250,15 @@ def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["
     '''
     Function to setup the pages for the StreamDeck.
     '''
-    start_time = time.time()
-
     # Use ThreadPoolExecutor to run setup functions in parallel
     with ThreadPoolExecutor(max_workers=3) as executor:
         future_box = executor.submit(box_row_setup, boxSizes)
         future_shipping = executor.submit(shipping_row_setup, labelPrinters)
         future_picklist = executor.submit(picklist_row_setup, labelPrinters)
 
-        # Wait for each future to complete and print the time
         future_box.result()
-        print("Time to setup box row: ", time.time() - start_time)
         future_shipping.result()
-        print("Time to setup shipping row: ", time.time() - start_time)
         future_picklist.result()
-        print("Time to setup picklist row: ", time.time() - start_time)
 
     num_pages = 1
     num_pages += len(addDocs) // 3 if len(addDocs) % 3 == 0 else len(addDocs) // 3 + 1
@@ -274,21 +268,7 @@ def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["
 
     utility_buttons_setup(num_pages)
 
-    start_time = time.time()
     first_page_setup(labelPrinters, boxSizes)
-    print("time to setup first page: ", time.time() - start_time)
-    
-    # setup_doc_pages(docPrinters, addDocs)
-    # print("time to setup rest of pages: ", time.time() - start_time)
-
-    # with ThreadPoolExecutor(max_workers=2) as executor:
-    #     future_first_page = executor.submit(first_page_setup, labelPrinters, boxSizes)
-    #     future_doc_pages = executor.submit(setup_doc_pages, docPrinters, addDocs)
-
-    #     future_first_page.result()
-    #     print("Time to setup first page: ", time.time() - start_time)
-    #     future_doc_pages.result()
-    #     print("Time to setup doc pages: ", time.time() - start_time)
 
     threading.Thread(target=setup_doc_pages, args=(docPrinters, addDocs)).start()
 

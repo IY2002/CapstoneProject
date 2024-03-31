@@ -1,7 +1,5 @@
 from SingletonDeckState import SingletonDeckState   
 from pre_image_processing import black_square
-import time
-import concurrent.futures
 
 deck_state = SingletonDeckState()
 
@@ -48,13 +46,10 @@ def display_page(idle=False):
         return
 
     for i in range(15):
-        loop_start_time = time.time()
         if deck_state.pages[deck_state.current_page][i] == None:
             deck_state.deck.set_key_image(i, black_square)
-            print("Time taken to display black square: ", time.time() - loop_start_time)
         else:
             deck_state.deck.set_key_image(i, deck_state.pages[deck_state.current_page][i])
-            print("Time taken to display image: ", time.time() - loop_start_time)
 
 def reset_rows():
     '''
