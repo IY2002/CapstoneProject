@@ -20,5 +20,9 @@ class SingletonDeckState:
             cls._instance.red_picklist_row = []
             cls._instance.shipping_row = []
             cls._instance.red_shipping_row = []
+            cls._instance.doc_pages = []
+            cls._instance.doc_red_pages = []
+            cls._instance.doc_text_pages = []
+            cls._instance.doc_pages_rows = []
             
         return cls._instance

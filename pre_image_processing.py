@@ -197,54 +197,83 @@ def utility_buttons_setup(num_pages):
         deck_state.pages[i][14] = full_logo
 
 def setup_doc_pages(docPrinters, addDocs):
-    for j in range(15):
-        if j >= 0 and j < 3:
-            if len(addDocs) >= 1 and j + 1 - len(docPrinters) <= 0:
-                deck_state.pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 1", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13))
-                deck_state.red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 1", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13)))
-            else:
-                deck_state.pages[1][j] = None
-                deck_state.red_pages[1][j] = None
+    docs_flat = []
+    red_docs_flat = []
+    docs_text_flat = []
+    for i in range(len(addDocs)):
+        this_doc = []
+        this_red_doc = []
+        this_text = []
+        for j in range(len(docPrinters)):
+            # Assuming create_text_overlay and the other functions are defined elsewhere
+            this_doc.append(format_image(create_text_overlay('./images/page_icon.png', addDocs[i], font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7', font_y_offset=6, subtext=docPrinters[j], subtext_font_size=13)))
+            this_red_doc.append(format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', addDocs[i], font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7', font_y_offset=6, subtext=docPrinters[j], subtext_font_size=13))))
+            this_text.append([addDocs[i], docPrinters[j]])
 
-        elif j == 3:
-            if len(addDocs) >= 1 and j + 1 - len(docPrinters) <= 0:
-                deck_state.pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 1", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13))
-                deck_state.red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 1", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j +1), subtext_font_size=13)))
-            else:
-                deck_state.pages[1][j] = None
-                deck_state.red_pages[1][j] = None
+        docs_flat.append(this_doc)
+        red_docs_flat.append(this_red_doc)
+        docs_text_flat.append(this_text)
 
-        elif j >= 5 and j < 8:
-            if len(addDocs) >= 2 and j - 4 - len(docPrinters) <= 0:
-                deck_state.pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13))
-                deck_state.red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13)))
-            else:
-                deck_state.pages[1][j] = None
-                deck_state.red_pages[1][j] = None
+    docs_grouped = []
+    docs_red_grouped = []
+    docs_text_grouped = []
 
-        elif j == 8:
-            if len(addDocs) >= 2 and j - 4 - len(docPrinters) <= 0:
-                deck_state.pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13))
-                deck_state.red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 2", font_size=18,font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext="Printer " + str(j - 4), subtext_font_size=13)))
-            else:
-                deck_state.pages[1][j] = None
-                deck_state.red_pages[1][j] = None
+    for i in range(len(docs_flat)):
+        cur_doc_page = []
+        cur_red_doc_page = []
+        cur_text_page = []
+        working_data = docs_flat[i]
+        working_data_red = red_docs_flat[i]
+        working_data_text = docs_text_flat[i]
 
-        elif j >=10 and j < 13:
-            if len(addDocs) >= 3 and j - 9 - len(docPrinters) <= 0:
-                deck_state.pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 3", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13))   
-                deck_state.red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 3", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13)))      
-            else:
-                deck_state.pages[1][j] = None
-                deck_state.red_pages[1][j] = None
+        for j in range(len(working_data)//3 + 1 if len(working_data) % 3 != 0 else len(working_data)//3):
+            new_row = []
+            new_red_row = []
+            new_text_row = []
+            for k in range(3):
+                if j*3 + k >= len(working_data):
+                    new_row.append(None)
+                    new_red_row.append(None)
+                    new_text_row.append(None)
+                else:
+                    new_row.append(working_data[j*3 + k])
+                    new_red_row.append(working_data_red[j*3 + k])
+                    new_text_row.append(working_data_text[j*3 + k])
+            cur_doc_page.append(new_row)
+            cur_red_doc_page.append(new_red_row)
+            cur_text_page.append(new_text_row)
 
-        elif j == 13:
-            if len(addDocs) >= 3 and j - 9 - len(docPrinters) <= 0:
-                deck_state.pages[1][j] = format_image(create_text_overlay('./images/page_icon.png', "Doc. 3", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13))   
-                deck_state.red_pages[1][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Doc. 3", font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7',font_y_offset=6, subtext="Printer " + str(j - 9), subtext_font_size=13)))      
-            else:
-                deck_state.pages[1][j] = None
-                deck_state.red_pages[1][j] = None
+        docs_grouped.append(cur_doc_page)
+        docs_red_grouped.append(cur_red_doc_page)
+        docs_text_grouped.append(cur_text_page)
+
+    deck_state.doc_pages_rows = [[0,0,0] for _ in range(len(docs_grouped))]
+
+    deck_state.doc_pages = []
+    deck_state.doc_red_pages = []
+    deck_state.doc_text_pages = []
+
+    for i in range(0, len(docs_grouped), 3):
+        deck_state.doc_pages.append(docs_grouped[i:i+3])
+        deck_state.doc_red_pages.append(docs_red_grouped[i:i+3])
+        deck_state.doc_text_pages.append(docs_text_grouped[i:i+3])
+
+    # update pages
+    for i in range(1, len(deck_state.doc_pages)+1):
+        for j in range(3):
+            for k in range(3):
+                if len(deck_state.doc_pages[i-1]) <= j:
+                    deck_state.pages[i][j*5 + k] = None
+                    deck_state.red_pages[i][j*5 + k] = None
+                else:
+                    deck_state.pages[i][j*5 + k] = deck_state.doc_pages[i-1][j][0][k]
+                    deck_state.red_pages[i][j*5 + k] = deck_state.doc_red_pages[i-1][j][0][k]
+
+    for i in range(len(deck_state.doc_pages)):
+        for j in range(3):
+            if len(deck_state.doc_pages[i]) > j and len(deck_state.doc_pages[i][j]) > 1:
+                deck_state.pages[i+1][j*5 + 3] = format_image(create_text_overlay('./images/page_icon.png', "Next", font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6))
+                deck_state.red_pages[i+1][j*5 + 3] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', "Next", font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6)))
 
 def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], labelPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], addDocs=["Doc. 1", "Doc. 2", "Doc. 3"]):
     '''
@@ -293,7 +322,7 @@ def box_row_setup(boxSizes):
                 deck_state.box_row[i][j] = None
                 deck_state.red_box_row[i][j] = None
 
-    deck_state.current_row = 0
+    deck_state.current_box_row = 0
 
 def shipping_row_setup(labelPrinters):
     '''
@@ -315,7 +344,8 @@ def shipping_row_setup(labelPrinters):
                 deck_state.shipping_row[i][j] = None
                 deck_state.red_shipping_row[i][j] = None
 
-    deck_state.current_row = 0
+    deck_state.current_shipping_row = 0
+
 def picklist_row_setup(labelPrinters):
     '''
     Function to setup the picklist rows for the StreamDeck.
@@ -335,4 +365,6 @@ def picklist_row_setup(labelPrinters):
             else:
                 deck_state.picklist_row[i][j] = None
                 deck_state.red_picklist_row[i][j] = None
+
+    deck_state.current_picklist_row = 0
                 
