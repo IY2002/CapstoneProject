@@ -99,7 +99,6 @@ def create_text_overlay(image_path, text_to_overlay, font_path="./Copyduck.ttf",
         print("Error: There was an issue opening the image file. The file may be corrupted or in an unsupported format.")
         return None
 
-    base_image = base_image.resize((72, 72), Image.Resampling.LANCZOS)
     overlay_image = Image.new("RGBA", base_image.size, (255,255,255,0))  # Create a transparent overlay
     draw = ImageDraw.Draw(overlay_image)
 
