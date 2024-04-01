@@ -8,6 +8,7 @@ def idle_screen():
     Function to display the idle screen on the StreamDeck.
     '''
     deck_state.process_input = False
+    deck_state.docs_ready = False
     display_page(True)
     
 def unidle_screen():
@@ -19,7 +20,6 @@ def unidle_screen():
     deck_state.current_picklist_row = 0
     deck_state.current_shipping_row = 0
     deck_state.process_input = True
-    # display_page()
 
 def page_box_update():
     for i in range(3):
@@ -35,6 +35,22 @@ def page_shipping_update():
     for i in range(3):
         deck_state.pages[0][i+10] = deck_state.shipping_row[deck_state.current_shipping_row][i]
         deck_state.red_pages[0][i+10] = deck_state.red_shipping_row[deck_state.current_shipping_row][i]
+
+def page_doc_update(key):
+    if key == 3:
+        for i in range(3):
+            deck_state.pages[deck_state.current_page][i] = deck_state.doc_pages[deck_state.current_page - 1][0][deck_state.doc_current_rows[deck_state.current_page - 1][0]][i]
+            deck_state.red_pages[deck_state.current_page][i] = deck_state.doc_red_pages[deck_state.current_page - 1][0][deck_state.doc_current_rows[deck_state.current_page - 1][0]][i]
+
+    elif key == 8:
+        for i in range(3):
+            deck_state.pages[deck_state.current_page][i+5] = deck_state.doc_pages[deck_state.current_page - 1][1][deck_state.doc_current_rows[deck_state.current_page - 1][1]][i]
+            deck_state.red_pages[deck_state.current_page][i+5] = deck_state.doc_red_pages[deck_state.current_page - 1][1][deck_state.doc_current_rows[deck_state.current_page - 1][1]][i]
+    
+    elif key == 13:
+        for i in range(3):
+            deck_state.pages[deck_state.current_page][i+10] = deck_state.doc_pages[deck_state.current_page - 1][2][deck_state.doc_current_rows[deck_state.current_page - 1][2]][i]
+            deck_state.red_pages[deck_state.current_page][i+10] = deck_state.doc_red_pages[deck_state.current_page - 1][2][deck_state.doc_current_rows[deck_state.current_page - 1][2]][i]
 
 def display_page(idle=False):
     '''
@@ -63,17 +79,19 @@ def next_page():
     '''
     Function to move to the next page on the StreamDeck.
     '''
-    deck_state.current_page = (deck_state.current_page + 1) % len(deck_state.pages)
-    reset_rows()
-    display_page()
+    if deck_state.docs_ready:
+        deck_state.current_page = (deck_state.current_page + 1) % len(deck_state.pages)
+        reset_rows()
+        display_page()
 
 def prev_page():
     '''
     Function to move to the previous page on the StreamDeck.
     '''
-    deck_state.current_page = (deck_state.current_page - 1) % len(deck_state.pages)
-    reset_rows()
-    display_page()
+    if deck_state.docs_ready:
+        deck_state.current_page = (deck_state.current_page - 1) % len(deck_state.pages)
+        reset_rows()
+        display_page()
 
 def display_box_row():
     for i in range(4):
@@ -86,3 +104,16 @@ def display_picklist_row():
 def display_shipping_row():
     for i in range(3):
         deck_state.deck.set_key_image(i+10, deck_state.pages[deck_state.current_page][i+10])
+
+def display_doc_row(key):
+    if key == 3:
+        for i in range(3):
+            deck_state.deck.set_key_image(i, deck_state.pages[deck_state.current_page][i])
+    
+    elif key == 8:
+        for i in range(3):
+            deck_state.deck.set_key_image(i+5, deck_state.pages[deck_state.current_page][i+5])
+    
+    elif key == 13:
+        for i in range(3):
+            deck_state.deck.set_key_image(i+10, deck_state.pages[deck_state.current_page][i+10])

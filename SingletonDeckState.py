@@ -23,6 +23,8 @@ class SingletonDeckState:
             cls._instance.doc_pages = []
             cls._instance.doc_red_pages = []
             cls._instance.doc_text_pages = []
-            cls._instance.doc_pages_rows = []
+            cls._instance.doc_num_rows = []
+            cls._instance.doc_current_rows = []
+            cls._instance.docs_ready = False
             
         return cls._instance
