@@ -18,7 +18,7 @@ def key_change_callback(deck, key, state):
         else:
             key_helper(key)
 
-def time_waiting(key):
+def function_caller(key):
 
     if deck_state.current_page != 0:
         doc_text = deck_state.doc_text_pages[deck_state.current_page - 1][key//5][deck_state.doc_current_rows[deck_state.current_page - 1][key//5]][key%5]
@@ -87,5 +87,5 @@ def key_helper(key):
         deck_state.deck.set_key_image(key, deck_state.red_pages[deck_state.current_page][key])
         deck_state.process_input = False
         
-        threading.Thread(target=time_waiting, args=(key,)).start()
+        threading.Thread(target=function_caller, args=(key,)).start()
     return

@@ -1,6 +1,6 @@
 from demo2 import setup
 from page_handler import idle_screen, unidle_screen
-from pre_image_processing import page_setup
+from page_setup import page_setup
 import flask 
 from flask import request, jsonify
 import threading

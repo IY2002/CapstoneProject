@@ -1,5 +1,6 @@
 from SingletonDeckState import SingletonDeckState
-from pre_image_processing import image_setup, page_setup, setup_idle_screen
+from pre_image_processing import image_setup
+from page_setup import setup_idle_screen
 from input_processing import key_change_callback
 from page_handler import idle_screen
 
