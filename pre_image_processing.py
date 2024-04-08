@@ -61,7 +61,6 @@ def image_setup():
     black_square = format_image(prep_image('./images/black_square.png'))
     page_next = format_image(create_text_overlay('./images/page_icon.png', "Next", font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6))
 
-
 def apply_red_hue(image, intensity=0.5):
     """
     Applies a red hue to the given PIL Image object.
@@ -115,12 +114,7 @@ def create_text_overlay(image_path, text_to_overlay, font_path="./Copyduck.ttf",
         subtext_x, subtext_y = calculate_text_position(draw, overlay_image, subtext, sub_font, 0)
         draw.text((subtext_x, subtext_y + 15), subtext, fill=subtext_font_color, font=sub_font)
 
-    if apply_red_hue:
-        red_image = Image.new("RGB", base_image.size, (255, 0, 0))
-        base_image = Image.blend(base_image.convert("RGB"), red_image, 0.4) 
-        base_image = Image.alpha_composite(base_image.convert("RGBA"), overlay_image)
-    else:
-        base_image.paste(overlay_image, (0, 0), overlay_image)  # Paste the text overlay onto the base image
+    base_image.paste(overlay_image, (0, 0), overlay_image)  # Paste the text overlay onto the base image
 
     resized_image = PILHelper.create_scaled_image(deck_state.deck, base_image, margins=[0,0,0,0])
     return resized_image
