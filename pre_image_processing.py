@@ -64,10 +64,6 @@ def image_setup():
 def apply_red_hue(image, intensity=0.5):
     """
     Applies a red hue to the given PIL Image object.
-
-    :param image: A PIL Image object to apply the red hue to.
-    :param intensity: The intensity of the red hue, ranging from 0.0 to 1.0.
-    :return: A new PIL Image object with the red hue applied.
     """
 
     # Create a red overlay
@@ -202,7 +198,6 @@ def setup_doc_pages(docPrinters, addDocs):
         this_red_doc = []
         this_text = []
         for j in range(len(docPrinters)):
-            # Assuming create_text_overlay and the other functions are defined elsewhere
             this_doc.append(format_image(create_text_overlay('./images/page_icon.png', addDocs[i], font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7', font_y_offset=6, subtext=docPrinters[j], subtext_font_size=13)))
             this_red_doc.append(format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', addDocs[i], font_size=16, font_path='OpenSans-ExtraBold.ttf', font_color='#60acf7', font_y_offset=6, subtext=docPrinters[j], subtext_font_size=13))))
             this_text.append([addDocs[i], docPrinters[j]])
@@ -263,23 +258,25 @@ def setup_doc_pages(docPrinters, addDocs):
                     deck_state.pages[i][j*5 + k] = deck_state.doc_pages[i-1][j][0][k]
                     deck_state.red_pages[i][j*5 + k] = deck_state.doc_red_pages[i-1][j][0][k]
 
+    # Add next button to rows that have more than one page
     for i in range(len(deck_state.doc_pages)):
         for j in range(3):
             if len(deck_state.doc_pages[i]) > j and len(deck_state.doc_pages[i][j]) > 1:
                 deck_state.pages[i+1][j*5 + 3] = page_next
 
+    # Setup the number of rows for each document
     deck_state.doc_num_rows = [[0,0,0] for _ in range(len(deck_state.doc_pages))]
-    deck_state.doc_current_rows = [[0,0,0] for _ in range(len(deck_state.doc_pages))]
-
     for i in range(len(deck_state.doc_pages)):
         for j in range(3):
             if len(deck_state.doc_pages[i]) > j:
                 deck_state.doc_num_rows[i][j] = len(deck_state.doc_pages[i][j])
     
-    print(deck_state.doc_num_rows)
+    deck_state.doc_current_rows = [[0,0,0] for _ in range(len(deck_state.doc_pages))]
 
     print("Doc pages setup complete.")
     print("Time taken: ", time.time() - start_time)
+
+    # Enables next and prev page functionality
     deck_state.docs_ready = True
 
 def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], labelPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], addDocs=["Doc. 1", "Doc. 2", "Doc. 3"]):
@@ -318,6 +315,7 @@ def box_row_setup(boxSizes):
 
     deck_state.box_row = [[None for _ in range(3)] for _ in range(num_rows)]
     deck_state.red_box_row = [[None for _ in range(3)] for _ in range(num_rows)]
+    deck_state.box_row_text = [[None for _ in range(3)] for _ in range(num_rows)]
 
     for i in range(num_rows):
         for j in range(3):
@@ -325,9 +323,12 @@ def box_row_setup(boxSizes):
                 text = boxSizes[(i*3) + j]
                 deck_state.box_row[i][j] = format_image(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='./OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3))
                 deck_state.red_box_row[i][j] = format_image(apply_red_hue(create_text_overlay('./images/box.png', text_to_overlay=text, font_size=16, font_path='./OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=-3)))
+                deck_state._instance.box_row_text[i][j] = text
+
             else:
                 deck_state.box_row[i][j] = None
                 deck_state.red_box_row[i][j] = None
+                deck_state.box_row_text[i][j] = None
 
     deck_state.current_box_row = 0
 
@@ -339,6 +340,7 @@ def shipping_row_setup(labelPrinters):
 
     deck_state.shipping_row = [[None for _ in range(3)] for _ in range(num_rows)]
     deck_state.red_shipping_row = [[None for _ in range(3)] for _ in range(num_rows)]
+    deck_state.shipping_row_text = [[None for _ in range(3)] for _ in range(num_rows)]
 
     for i in range(num_rows):
         for j in range(3):
@@ -347,9 +349,11 @@ def shipping_row_setup(labelPrinters):
 
                 deck_state.shipping_row[i][j] = format_image(create_text_overlay('./images/label_icon.png', text_to_overlay="Shipping", font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext=text, subtext_font_size=13))
                 deck_state.red_shipping_row[i][j] = format_image(apply_red_hue(create_text_overlay('./images/label_icon.png', text_to_overlay="Shipping", font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext=text, subtext_font_size=13)))
+                deck_state.shipping_row_text[i][j] = text
             else:
                 deck_state.shipping_row[i][j] = None
                 deck_state.red_shipping_row[i][j] = None
+                deck_state.shipping_row_text[i][j] = None
 
     deck_state.current_shipping_row = 0
 
@@ -361,6 +365,7 @@ def picklist_row_setup(labelPrinters):
 
     deck_state.picklist_row = [[None for _ in range(3)] for _ in range(num_rows)]
     deck_state.red_picklist_row = [[None for _ in range(3)] for _ in range(num_rows)]
+    deck_state.picklist_row_text = [[None for _ in range(3)] for _ in range(num_rows)]
 
     for i in range(num_rows):
         for j in range(3):
@@ -369,9 +374,11 @@ def picklist_row_setup(labelPrinters):
 
                 deck_state.picklist_row[i][j] = format_image(create_text_overlay('./images/page_icon.png', text_to_overlay="Picklist", font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext=text, subtext_font_size=13))
                 deck_state.red_picklist_row[i][j] = format_image(apply_red_hue(create_text_overlay('./images/page_icon.png', text_to_overlay="Picklist", font_size=16, font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6, subtext=text, subtext_font_size=13)))
+                deck_state.picklist_row_text[i][j] = text
             else:
                 deck_state.picklist_row[i][j] = None
                 deck_state.red_picklist_row[i][j] = None
+                deck_state.picklist_row_text[i][j] = None
 
     deck_state.current_picklist_row = 0
                 

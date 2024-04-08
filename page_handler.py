@@ -39,18 +39,30 @@ def page_shipping_update():
 def page_doc_update(key):
     if key == 3:
         for i in range(3):
-            deck_state.pages[deck_state.current_page][i] = deck_state.doc_pages[deck_state.current_page - 1][0][deck_state.doc_current_rows[deck_state.current_page - 1][0]][i]
-            deck_state.red_pages[deck_state.current_page][i] = deck_state.doc_red_pages[deck_state.current_page - 1][0][deck_state.doc_current_rows[deck_state.current_page - 1][0]][i]
+            if len(deck_state.doc_pages[deck_state.current_page - 1]) >= 1:
+                deck_state.pages[deck_state.current_page][i] = deck_state.doc_pages[deck_state.current_page - 1][0][deck_state.doc_current_rows[deck_state.current_page - 1][0]][i]
+                deck_state.red_pages[deck_state.current_page][i] = deck_state.doc_red_pages[deck_state.current_page - 1][0][deck_state.doc_current_rows[deck_state.current_page - 1][0]][i]
+            else:
+                deck_state.pages[deck_state.current_page][i] = black_square
+                deck_state.red_pages[deck_state.current_page][i] = black_square
 
     elif key == 8:
         for i in range(3):
-            deck_state.pages[deck_state.current_page][i+5] = deck_state.doc_pages[deck_state.current_page - 1][1][deck_state.doc_current_rows[deck_state.current_page - 1][1]][i]
-            deck_state.red_pages[deck_state.current_page][i+5] = deck_state.doc_red_pages[deck_state.current_page - 1][1][deck_state.doc_current_rows[deck_state.current_page - 1][1]][i]
+            if len(deck_state.doc_pages[deck_state.current_page - 1]) >= 2:
+                deck_state.pages[deck_state.current_page][i+5] = deck_state.doc_pages[deck_state.current_page - 1][1][deck_state.doc_current_rows[deck_state.current_page - 1][1]][i]
+                deck_state.red_pages[deck_state.current_page][i+5] = deck_state.doc_red_pages[deck_state.current_page - 1][1][deck_state.doc_current_rows[deck_state.current_page - 1][1]][i]
+            else:
+                deck_state.pages[deck_state.current_page][i+5] = black_square
+                deck_state.red_pages[deck_state.current_page][i+5] = black_square
     
     elif key == 13:
         for i in range(3):
-            deck_state.pages[deck_state.current_page][i+10] = deck_state.doc_pages[deck_state.current_page - 1][2][deck_state.doc_current_rows[deck_state.current_page - 1][2]][i]
-            deck_state.red_pages[deck_state.current_page][i+10] = deck_state.doc_red_pages[deck_state.current_page - 1][2][deck_state.doc_current_rows[deck_state.current_page - 1][2]][i]
+            if len(deck_state.doc_pages[deck_state.current_page - 1]) >= 3:
+                deck_state.pages[deck_state.current_page][i+10] = deck_state.doc_pages[deck_state.current_page - 1][2][deck_state.doc_current_rows[deck_state.current_page - 1][2]][i]
+                deck_state.red_pages[deck_state.current_page][i+10] = deck_state.doc_red_pages[deck_state.current_page - 1][2][deck_state.doc_current_rows[deck_state.current_page - 1][2]][i]
+            else:
+                deck_state.pages[deck_state.current_page][i+10] = black_square
+                deck_state.red_pages[deck_state.current_page][i+10] = black_square
 
 def display_page(idle=False):
     '''
@@ -71,9 +83,21 @@ def reset_rows():
     '''
     Function to reset the current row of the StreamDeck.
     '''
-    deck_state.current_box_row = 0
-    deck_state.current_picklist_row = 0
-    deck_state.current_shipping_row = 0
+    if deck_state.current_page == 0:
+        deck_state.current_box_row = 0
+        deck_state.current_picklist_row = 0
+        deck_state.current_shipping_row = 0
+
+        page_box_update()
+        page_picklist_update()
+        page_shipping_update()
+
+    else:
+        deck_state.doc_current_rows[deck_state.current_page - 1] = [0, 0, 0]
+
+        page_doc_update(3)
+        page_doc_update(8)
+        page_doc_update(13)
 
 def next_page():
     '''

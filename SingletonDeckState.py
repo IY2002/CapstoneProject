@@ -26,5 +26,8 @@ class SingletonDeckState:
             cls._instance.doc_num_rows = []
             cls._instance.doc_current_rows = []
             cls._instance.docs_ready = False
+            cls._instance.box_row_text = []
+            cls._instance.picklist_row_text = []
+            cls._instance.shipping_row_text = []
             
         return cls._instance

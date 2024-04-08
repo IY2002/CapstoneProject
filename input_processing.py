@@ -19,6 +19,21 @@ def key_change_callback(deck, key, state):
             key_helper(key)
 
 def time_waiting(key):
+
+    if deck_state.current_page != 0:
+        doc_text = deck_state.doc_text_pages[deck_state.current_page - 1][key//5][deck_state.doc_current_rows[deck_state.current_page - 1][key//5]][key%5]
+
+        print(doc_text[0], doc_text[1])
+
+    elif key < 3:
+        print("Picklist", deck_state.picklist_row_text[deck_state.current_picklist_row][key])
+
+    elif key >= 5 and key < 8:
+        print("Box", deck_state.box_row_text[deck_state.current_box_row][key - 5])
+
+    elif key >= 10 and key < 13:
+        print("Shipping", deck_state.shipping_row_text[deck_state.current_shipping_row][key - 10])
+
     # Simulate a long-running task with a loop
     time.sleep(1.5)
     
@@ -68,7 +83,7 @@ def key_helper(key):
     elif key == 3 or key == 8 or key == 13:
         next_doc_row(key)
 
-    else:
+    else:        
         deck_state.deck.set_key_image(key, deck_state.red_pages[deck_state.current_page][key])
         deck_state.process_input = False
         
