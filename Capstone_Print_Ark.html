@@ -1,0 +1,30 @@
+<html>
+<script src="qz-tray.js"></script>
+<script>
+
+
+function print() {
+    qz.websocket.connect().then(function() {
+        qz.printers.find('EPSON3E6C5B (ET-3850 Series)').then(function(printer) {
+            //return the printers' names
+            //alert(printer);
+            var config = qz.configs.create('EPSON3E6C5B (ET-3850 Series)');
+            var data = [{
+                type: 'pixel',
+                format: 'pdf',
+                flavor: 'file',
+                data: 'D:/Capstone_Project/Sample 4x6 Label.pdf' //absolute path for the printing document
+            }];
+            qz.print(config, data);
+        }).catch(function(e) {
+            alert(e);
+        }).then(function() {
+            setTimeout(function() {
+                window.close();
+            }, 5000); // 1000 stands for 1 second
+        });
+    });
+}
+window.onload = print;
+</script>
+</html>
