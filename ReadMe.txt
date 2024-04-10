@@ -6,3 +6,8 @@
 Before running/testing the code:
 Download the QZ Tray, here is the download link: https://qz.io/download/
 Download Rollo printer application for Rollo to work, here is the download link: https://www.rollo.com/setup
+
+
+Reference:
+https://www.youtube.com/watch?v=wKIY4gqkIFE
+https://qz.io/docs
