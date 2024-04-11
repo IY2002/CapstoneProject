@@ -3,6 +3,25 @@
 <script>
 
 
+qz.security.setCertificatePromise(function(resolve, reject) {
+   fetch("https://wms.shipitdone.com/digital-certificate.txt", {cache: 'no-store', headers: {'Content-Type': 'text/plain'}})
+      .then(function(data) { data.ok ? resolve(data.text()) : reject(data.text()); });
+});
+
+
+qz.security.setSignaturePromise(function(message) {
+    return function(resolve, reject) {
+        fetch('https://tools.shipitdone.com/sign_message', {
+         method: 'POST',
+         headers: {
+             'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({message})
+        }).then(function(data) { data.ok ? resolve(data.json()) : reject(data.json()); });
+    };
+});
+
+
 function print() {
     qz.websocket.connect().then(function() {
         qz.printers.find('EPSON3E6C5B (ET-3850 Series)').then(function(printer) {
@@ -25,6 +44,8 @@ function print() {
         });
     });
 }
+
+//Reference: https://www.youtube.com/watch?v=wKIY4gqkIFE
 window.onload = print;
 </script>
 </html>
