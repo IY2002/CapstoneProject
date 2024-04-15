@@ -162,10 +162,15 @@ def setup_doc_pages(docPrinters, addDocs):
     # Enables next and prev page functionality
     deck_state.docs_ready = True
 
-def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], labelPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], addDocs=["Doc. 1", "Doc. 2", "Doc. 3"]):
+def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], labelPrinters=["Printer 1", "Printer 2", "Printer 3", "Printer 4"], addDocs=["Doc. 1", "Doc. 2", "Doc. 3"], data=None):
     '''
     Function to setup the pages for the StreamDeck.
     '''
+
+    if data is not None:
+        deck_state.data = data
+        
+
     # Use ThreadPoolExecutor to run setup functions in parallel
     with ThreadPoolExecutor(max_workers=3) as executor:
         future_box = executor.submit(box_row_setup, boxSizes)

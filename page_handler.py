@@ -21,6 +21,21 @@ def unidle_screen():
     deck_state.current_shipping_row = 0
     deck_state.process_input = True
 
+def show_calc_page():
+    '''
+    Function to display the calculator page on the StreamDeck.
+    '''
+    deck_state.current_page = -1
+    deck_state.calc_input = ""
+    display_page()
+
+def hide_calc_page():
+    '''
+    Function to hide the calculator page on the StreamDeck.
+    '''
+    deck_state.current_page = 0
+    display_page()
+
 def page_box_update():
     for i in range(3):
         deck_state.pages[0][i+5] = deck_state.box_row[deck_state.current_box_row][i]
@@ -68,6 +83,10 @@ def display_page(idle=False):
     '''
     Function to display a page on the StreamDeck.
     '''
+    if deck_state.current_page == -1:
+        for i in range(15):
+            deck_state.deck.set_key_image(i, deck_state.calc_pages[i])
+        return
     if idle:
         for i in range(15):
             deck_state.deck.set_key_image(i, deck_state.idle_pages[i])

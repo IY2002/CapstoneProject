@@ -1,5 +1,5 @@
 from SingletonDeckState import SingletonDeckState
-from pre_image_processing import image_setup
+from pre_image_processing import image_setup, calculator_images_setup
 from page_setup import setup_idle_screen
 from input_processing import key_change_callback
 from page_handler import idle_screen
@@ -11,6 +11,7 @@ def setup():
     Function to setup the StreamDeck.
     '''
     image_setup()
+    calculator_images_setup()
     setup_idle_screen()
     deck_state.deck.open()
     deck_state.deck.set_brightness(100)
