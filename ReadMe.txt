@@ -17,4 +17,4 @@ File Path:
 /home/user/CapstoneProject/Printing/CapstoneProject/Sample 4x6 Label.pdf
 
 URL link for Rollo testing:
-https://qz.shipitdone.com/C_Rollo.html
+https://qz.shipitdone.com/Rollo_pi.html
