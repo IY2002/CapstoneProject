@@ -1,4 +1,4 @@
-import flask 
+import flask
 import json
 import requests
 import socket
@@ -12,15 +12,15 @@ app = flask.Flask(__name__)
 
 @app.route('/print_doc', methods=['POST'])
 def print_doc():
-    rollo_print_doc() # Replace with your own function
+    webbrowser.open('https://qz.shipitdone.com/ARK_Additional.html') #rollo_print_doc()
     return {"status": "success"}
 
 @app.route('/print_label', methods=['POST'])
 def print_label():
-    rollo_print_label() # Replace with your own function
+    webbrowser.open('https://qz.shipitdone.com/ARK.html')  #rollo_print_label()
     return {"status": "success"}
 
 if __name__ == '__main__':
     ip = print_ip()
-    requests.post('https://shipitdone.ngrok.app/laptop_signup', data=json.dumps({"laptop_ip": ip})) 
-    app.run(host='0.0.0.0.0', port=5000)   
+    requests.post('https://shipitdone.ngrok.app/laptop_signup', data=json.dumps({"laptop_ip": ip}))
+    app.run(host='0.0.0.0.0', port=5000)
