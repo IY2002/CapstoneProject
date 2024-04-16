@@ -18,6 +18,12 @@ start_button = None
 
 deck_state = SingletonDeckState()
 
+def textsize(text, font):
+    im = Image.new(mode="P", size=(0 ,0))
+    draw = ImageDraw.Draw(im)
+    _, _, width, height = draw.textbbox((0, 0), text=text, font=font)
+    return width, height
+
 def prep_image(file_path):
     '''
     Function to prepare an image to be displayed on the StreamDeck.
@@ -118,7 +124,7 @@ def split_text(text, font, max_width, draw):
     for word in words:
         # Check width with the current line plus the new word
         test_line = ' '.join(current_line + [word])
-        test_width, _ = draw.textsize(test_line, font=font)
+        test_width, _ = textsize(test_line, font=font)
         if test_width <= max_width:
             current_line.append(word)
         else:
@@ -152,7 +158,7 @@ def create_text_overlay(image_path, text_to_overlay, font_path="./Copyduck.ttf",
 
     if subtext:
         sub_font = ImageFont.truetype(font_path, subtext_font_size)
-        subtext_width, subtext_height = draw.textsize(subtext, font=sub_font)
+        subtext_width, subtext_height = textsize(subtext, font=sub_font)
         subtext_x = (base_image.width - subtext_width) / 2
         subtext_y = text_y + 25
         draw.text((subtext_x, subtext_y), subtext, fill=subtext_font_color, font=sub_font)
@@ -166,12 +172,12 @@ def calculate_text_position(draw, image, lines, font, y_offset=0):
     '''
     Calculate the position for the text to be centered on the image, adjusted for multiple lines.
     '''
-    total_height = sum(draw.textsize(line, font=font)[1] for line in lines) + 10 * (len(lines) - 1)  # Add spacing between lines
+    total_height = sum(textsize(line, font=font)[1] for line in lines) + 10 * (len(lines) - 1)  # Add spacing between lines
     text_y = (image.height - total_height) / 2 - y_offset
 
     positions = []
     for line in lines:
-        text_width, text_height = draw.textsize(line, font=font)
+        text_width, text_height = textsize(line, font=font)
         text_x = (image.width - text_width) / 2
         positions.append((text_x, text_y))
         text_y += text_height + 5  # Move to the next line position with some spacing
