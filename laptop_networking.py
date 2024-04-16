@@ -2,6 +2,7 @@ import flask
 import json
 import requests
 import socket
+import webbrowser
 
 def print_ip():
     hostname=socket.gethostname()
@@ -22,5 +23,6 @@ def print_label():
 
 if __name__ == '__main__':
     ip = print_ip()
-    requests.post('https://shipitdone.ngrok.app/laptop_signup', data=json.dumps({"laptop_ip": ip}))
-    app.run(host='0.0.0.0.0', port=5000)
+    requests.post('https://shipitdone.ngrok.app/laptop_signup', json=json.dumps({"laptop_ip": ip, "userID": "123"}))
+    app.run(host='0.0.0.0', port=5000)
+
