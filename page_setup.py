@@ -22,33 +22,33 @@ def first_page_setup(labelPrinters, boxSizes):
     '''
 
     for j in range(15):
-        if j >= 0 and j < 3:
-            deck_state.pages[0][j] = deck_state.picklist_row[0][j]
-            deck_state.red_pages[0][j] = deck_state.red_picklist_row[0][j]
-        elif j == 3:
-            if len(labelPrinters) > 3:
-                deck_state.pages[0][j] = deck_state.page_next
+        # if j >= 0 and j < 3:
+        #     deck_state.pages[0][j] = deck_state.picklist_row[0][j]
+        #     deck_state.red_pages[0][j] = deck_state.red_picklist_row[0][j]
+        # elif j == 3:
+        #     if len(labelPrinters) > 3:
+        #         deck_state.pages[0][j] = deck_state.page_next
 
-            else:
-                deck_state.pages[0][j] = None
-                deck_state.red_pages[0][j] = None
+        #     else:
+        #         deck_state.pages[0][j] = None
+        #         deck_state.red_pages[0][j] = None
         
-        elif j >= 5 and j < 8:
-            deck_state.pages[0][j] = deck_state.box_row[0][j-5]
-            deck_state.red_pages[0][j] = deck_state.red_box_row[0][j-5]
+        if j >= 0 and j < 3:
+            deck_state.pages[0][j] = deck_state.box_row[0][j]
+            deck_state.red_pages[0][j] = deck_state.red_box_row[0][j]
 
-        elif j == 8:
+        elif j == 3:
             if len(boxSizes) > 3:
                 deck_state.pages[0][j] = format_image(create_text_overlay('./images/box.png', "Next", font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7'))
             else:
                 deck_state.pages[0][j] = None
                 deck_state.red_pages[0][j] = None
 
-        elif j >=10 and j < 13:
-            deck_state.pages[0][j] = deck_state.shipping_row[0][j-10]
-            deck_state.red_pages[0][j] = deck_state.red_shipping_row[0][j-10]
+        elif j >=5 and j < 8:
+            deck_state.pages[0][j] = deck_state.shipping_row[0][j-5]
+            deck_state.red_pages[0][j] = deck_state.red_shipping_row[0][j-5]
 
-        elif j == 13:
+        elif j == 8:
             if len(labelPrinters) > 3:
                 deck_state.pages[0][j] = format_image(create_text_overlay('./images/label_icon.png', "Next", font_path='OpenSans-ExtraBold.ttf' ,font_color='#60acf7', font_y_offset=6))
             else:
@@ -175,11 +175,11 @@ def page_setup(boxSizes=["4x4X4", "6X6X8", "8X8X12", "16X18X24"], docPrinters=["
     with ThreadPoolExecutor(max_workers=3) as executor:
         future_box = executor.submit(box_row_setup, boxSizes)
         future_shipping = executor.submit(shipping_row_setup, labelPrinters)
-        future_picklist = executor.submit(picklist_row_setup, labelPrinters)
+        # future_picklist = executor.submit(picklist_row_setup, labelPrinters)
 
         future_box.result()
         future_shipping.result()
-        future_picklist.result()
+        # future_picklist.result()
 
     num_pages = 1
     num_pages += len(addDocs) // 3 if len(addDocs) % 3 == 0 else len(addDocs) // 3 + 1

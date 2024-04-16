@@ -42,3 +42,6 @@ class SingletonDeckState:
         instance.calc_red_pages = [None for _ in range(15)]
         instance.calc_input = ""
         instance.data = None
+        instance.label_ready = False
+        instance.laptop_ip = ""
+        instance.laptop_id = ""

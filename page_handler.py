@@ -38,8 +38,8 @@ def hide_calc_page():
 
 def page_box_update():
     for i in range(3):
-        deck_state.pages[0][i+5] = deck_state.box_row[deck_state.current_box_row][i]
-        deck_state.red_pages[0][i+5] = deck_state.red_box_row[deck_state.current_box_row][i]
+        deck_state.pages[0][i] = deck_state.box_row[deck_state.current_box_row][i]
+        deck_state.red_pages[0][i] = deck_state.red_box_row[deck_state.current_box_row][i]
 
 def page_picklist_update():
     for i in range(3):
@@ -48,8 +48,8 @@ def page_picklist_update():
 
 def page_shipping_update():
     for i in range(3):
-        deck_state.pages[0][i+10] = deck_state.shipping_row[deck_state.current_shipping_row][i]
-        deck_state.red_pages[0][i+10] = deck_state.red_shipping_row[deck_state.current_shipping_row][i]
+        deck_state.pages[0][i+5] = deck_state.shipping_row[deck_state.current_shipping_row][i]
+        deck_state.red_pages[0][i+5] = deck_state.red_shipping_row[deck_state.current_shipping_row][i]
 
 def page_doc_update(key):
     if key == 3:
@@ -108,7 +108,7 @@ def reset_rows():
         deck_state.current_shipping_row = 0
 
         page_box_update()
-        page_picklist_update()
+        # page_picklist_update()
         page_shipping_update()
 
     else:
@@ -138,7 +138,7 @@ def prev_page():
 
 def display_box_row():
     for i in range(4):
-        deck_state.deck.set_key_image(i+5, deck_state.pages[deck_state.current_page][i+5])
+        deck_state.deck.set_key_image(i+5, deck_state.pages[deck_state.current_page][i])
 
 def display_picklist_row():
     for i in range(3):
@@ -146,7 +146,7 @@ def display_picklist_row():
 
 def display_shipping_row():
     for i in range(3):
-        deck_state.deck.set_key_image(i+10, deck_state.pages[deck_state.current_page][i+10])
+        deck_state.deck.set_key_image(i+10, deck_state.pages[deck_state.current_page][i+5])
 
 def display_doc_row(key):
     if key == 3:

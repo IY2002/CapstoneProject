@@ -3,8 +3,6 @@ from page_handler import next_page, prev_page, page_box_update, page_picklist_up
 import time, threading
 from pre_image_processing import format_image, create_text_overlay
 import requests
-import os
-import wget
 deck_state = SingletonDeckState()
 
 box_url = "https://wms.shipitdone.com/version-3tar/api/1.1/wf/capstone_ship_print/"
@@ -46,22 +44,25 @@ def send_box_post_request(weight):
     
     # Send the POST request
     response = requests.post(box_url, json=payload)
-    #need to save file, it gives us the URL.
-    #Rename the file to a consistent name
-    #save the location of the file, set flag stating label is ready
-    filepath = "/dummy/label.pdf"
-    file = wget(box_url, out = filepath)
-    labelready = True
+    # #need to save file, it gives us the URL.
+    # #Rename the file to a consistent name
+    # #save the location of the file, set flag stating label is ready
+    # filepath = "/dummy/label.pdf"
+    # file = wget(box_url, out = filepath)
+    # labelready = True
 
 
-    #print the label
+    # #print the label
 
-    #after printing, reset the print button flag
-    printready = False
-    #delete the file
-    os.remove('/dummy/label.pdf')
-    #reset the label ready flag
-    labelready = False
+    # #after printing, reset the print button flag
+    # printready = False
+    # #delete the file
+    # os.remove('/dummy/label.pdf')
+    # #reset the label ready flag
+    # labelready = False
+
+    deck_state.label_ready = True
+
     return response.json()
 
 def update_calc_display():
@@ -75,13 +76,23 @@ def flash_button(key):
     '''
     Function to flash a button on the calculator page.
     '''
-    for _ in range(3):
-        time.sleep(0.1)
-        deck_state.deck.set_key_image(key, deck_state.calc_pages[key])
-        time.sleep(0.1)
-        deck_state.deck.set_key_image(key, deck_state.calc_red_pages[key])
+    if deck_state.current_page == -1:
+        for _ in range(3):
+            time.sleep(0.1)
+            deck_state.deck.set_key_image(key, deck_state.calc_pages[key])
+            time.sleep(0.1)
+            deck_state.deck.set_key_image(key, deck_state.calc_red_pages[key])
 
-    deck_state.deck.set_key_image(key, deck_state.calc_pages[key])
+        deck_state.deck.set_key_image(key, deck_state.calc_pages[key])
+    else:
+        for _ in range(3):
+            time.sleep(0.1)
+            deck_state.deck.set_key_image(key, deck_state.pages[deck_state.current_page][key])
+            time.sleep(0.1)
+            deck_state.deck.set_key_image(key, deck_state.red_pages[deck_state.current_page][key])
+
+        deck_state.deck.set_key_image(key, deck_state.pages[deck_state.current_page][key])
+
 
 def calc_key_handler(key):
     '''
@@ -125,27 +136,39 @@ def calc_key_handler(key):
 def function_caller(key):
     if deck_state.current_page > 0:
         doc_text = deck_state.doc_text_pages[deck_state.current_page - 1][key//5][deck_state.doc_current_rows[deck_state.current_page - 1][key//5]][key%5]
-
+        
+        if deck_state.laptop_ip != "":
+                requests.post(deck_state.laptop_ip + ":5005/print_doc")
+        else:
+            flash_button(key)
+        
         print(doc_text[0], doc_text[1])
 
-    elif key < 3:
-        print("Picklist", deck_state.picklist_row_text[deck_state.current_picklist_row][key])
+    # elif key < 3:
+    #     print("Picklist", deck_state.picklist_row_text[deck_state.current_picklist_row][key])
 
-    elif key >= 5 and key < 8:
-        print("Box", deck_state.box_row_text[deck_state.current_box_row][key - 5])
+    elif key >= 0 and key < 3:
+        print("Box", deck_state.box_row_text[deck_state.current_box_row][key] )
         global box_chosen
-        box_chosen = deck_state.box_row_text[deck_state.current_box_row][key - 5]
+        box_chosen = deck_state.box_row_text[deck_state.current_box_row][key ]
         show_calc_page()
         deck_state.process_input = True
         return
 
-    elif key >= 10 and key < 13:
-        print("Shipping", deck_state.shipping_row_text[deck_state.current_shipping_row][key - 10])
-        printer_chosen = deck_state.shipping_row_text[deck_state.current_shipping_row][key - 10]
-        printready = True
+    elif key >= 5 and key < 8:
+        if deck_state.label_ready == False:
+            flash_button(key)
+        else:
+            if deck_state.laptop_ip != "":
+                requests.post(deck_state.laptop_ip + ":5005/print_label")
+            else:
+                flash_button(key)
+
+        print("Shipping", deck_state.shipping_row_text[deck_state.current_shipping_row][key - 5])
+
 
     # Simulate a long-running task with a loop
-    time.sleep(1.5)
+    # time.sleep(1.5)
     
     # Once the task is done, set process_input back to True
     deck_state.deck.set_key_image(key, deck_state.pages[deck_state.current_page][key])
