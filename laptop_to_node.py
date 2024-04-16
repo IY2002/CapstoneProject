@@ -6,5 +6,5 @@ def send_to_central():
     ip = socket.gethostbyname(hostname)
     username = employee@shipitdone.com
     info = {'username',ip}
-    requests.post('https://shipitdone.ngrok.app', json = info)
+    requests.post('https://shipitdone.ngrok.app/laptop_signup', json = info)
    
