@@ -3,13 +3,17 @@ from page_handler import next_page, prev_page, page_box_update, page_picklist_up
 import time, threading
 from pre_image_processing import format_image, create_text_overlay
 import requests
-
+import os
+import wget
 deck_state = SingletonDeckState()
 
 box_url = "https://wms.shipitdone.com/version-3tar/api/1.1/wf/capstone_ship_print/"
 
 box_chosen = ""
 
+printready = False
+
+labelready = False
 def key_change_callback(deck, key, state):
     '''
     Function to handle key presses on the StreamDeck.
@@ -42,7 +46,22 @@ def send_box_post_request(weight):
     
     # Send the POST request
     response = requests.post(box_url, json=payload)
-    
+    #need to save file, it gives us the URL.
+    #Rename the file to a consistent name
+    #save the location of the file, set flag stating label is ready
+    filepath = "/dummy/label.pdf"
+    file = wget(box_url, out = filepath)
+    labelready = True
+
+
+    #print the label
+
+    #after printing, reset the print button flag
+    printready = False
+    #delete the file
+    os.remove('/dummy/label.pdf')
+    #reset the label ready flag
+    labelready = False
     return response.json()
 
 def update_calc_display():
@@ -122,6 +141,8 @@ def function_caller(key):
 
     elif key >= 10 and key < 13:
         print("Shipping", deck_state.shipping_row_text[deck_state.current_shipping_row][key - 10])
+        printer_chosen = deck_state.shipping_row_text[deck_state.current_shipping_row][key - 10]
+        printready = True
 
     # Simulate a long-running task with a loop
     time.sleep(1.5)
