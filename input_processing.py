@@ -137,10 +137,10 @@ def function_caller(key):
     if deck_state.current_page > 0:
         doc_text = deck_state.doc_text_pages[deck_state.current_page - 1][key//5][deck_state.doc_current_rows[deck_state.current_page - 1][key//5]][key%5]
         
-        if deck_state.laptop_ip != "":
-                requests.post(deck_state.laptop_ip + ":5005/print_doc")
-        else:
-            flash_button(key)
+        
+       
+        requests.post(deck_state.laptop_ip.strip() + "/print_doc")
+        time.sleep(5)
         
         print(doc_text[0], doc_text[1])
 
@@ -156,13 +156,13 @@ def function_caller(key):
         return
 
     elif key >= 5 and key < 8:
-        if deck_state.label_ready == False:
+        if deck_state.label_ready == False or deck_state.laptop_ip == "":
             flash_button(key)
         else:
-            if deck_state.laptop_ip != "":
-                requests.post(deck_state.laptop_ip + ":5005/print_label")
-            else:
-                flash_button(key)
+            print(deck_state.laptop_ip.strip() + "/print_label")
+            
+            requests.post(deck_state.laptop_ip.strip() + "/print_label")
+            time.sleep(5)
 
         print("Shipping", deck_state.shipping_row_text[deck_state.current_shipping_row][key - 5])
 

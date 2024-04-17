@@ -16,21 +16,24 @@ deck_state = SingletonDeckState()
 def get_laptop_ip():
     data = request.get_json(force = True)
     deck_state.laptop_ip = data["ip"]
-    deck_state.laptop_id = data["userID"]
+    # deck_state.laptop_id = data["userID"]
+    print("Recieved IP: ", deck_state.laptop_ip)
+    return {"status" : "success"}
 
 def send_print_label():
-    requests.post(deck_state.laptop_ip + ":5005/print_label")
+    requests.post(deck_state.laptop_ip + "/print_label")
 
 def send_print_doc():
-    requests.post(deck_state.laptop_ip + ":5005/print_doc")
+    requests.post(deck_state.laptop_ip + "/print_doc")
 
 
 def send_user_ip():
-    hostname = socket.gethostname()
-    ip = socket.gethostbyname(hostname)
+    # hostname = socket.gethostname()
+    # ip = socket.gethostbyname(hostname)
     userID = "123"
-    info = {'username' : userID, 'ip' : ip}
-    requests.post('https://shipitdone.ngrok.app/user_signup', json = info)
+    info = {'userID' : userID, 'ip' : "10.32.27.21"}
+    # print("ip: ", ip)
+    requests.post('http://shipitdone.ngrok.app/user_signup', json = info)
 
 @app.route('/update', methods=['POST'])
 def demo():
