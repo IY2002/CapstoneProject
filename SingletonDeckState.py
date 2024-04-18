@@ -1,15 +1,17 @@
 from deck_setup import connect_to_elgato
+
 class SingletonDeckState:
-    _instance = None
+    _instance = None  # Private class variable to hold the singleton instance
 
     def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(SingletonDeckState, cls).__new__(cls)
-            cls._initialize(cls._instance)
-        return cls._instance
+        if cls._instance is None:  # Check if the singleton instance has been created
+            cls._instance = super(SingletonDeckState, cls).__new__(cls)  # Create the singleton instance
+            cls._initialize(cls._instance)  # Initialize the instance
+        return cls._instance  # Return the singleton instance
 
     @classmethod
     def _initialize(cls, instance):
+        # Initialize instance variables
         instance.current_page = 0
         instance.current_box_row = 0
         instance.current_picklist_row = 0
