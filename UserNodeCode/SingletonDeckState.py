@@ -47,3 +47,4 @@ class SingletonDeckState:
         instance.label_ready = False
         instance.laptop_ip = ""
         instance.laptop_id = ""
+        instance.label_url = ""
