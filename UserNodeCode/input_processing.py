@@ -115,6 +115,9 @@ def calc_key_handler(key):
         response = send_box_post_request(float(deck_state.calc_input))
         print("Response: ", response["response"]["url"])
 
+        # Set the label URL
+        deck_state.label_url = response["response"]["url"]
+
         hide_calc_page()
         
         deck_state.process_input = True
@@ -136,7 +139,7 @@ def function_caller(key):
         doc_text = deck_state.doc_text_pages[deck_state.current_page - 1][key//5][deck_state.doc_current_rows[deck_state.current_page - 1][key//5]][key%5]    
        
         # Send a POST request to print the document
-        requests.post(deck_state.laptop_ip.strip() + "/print_doc")
+        requests.post(deck_state.laptop_ip.strip() + "/print_doc", json={"printer": doc_text[1], "doc_num": key//5})
         time.sleep(5)
         
         # Print the document text
@@ -160,7 +163,7 @@ def function_caller(key):
         else:
             # Send a POST request to print the label
             print(deck_state.laptop_ip.strip() + "/print_label")
-            requests.post(deck_state.laptop_ip.strip() + "/print_label")
+            requests.post(deck_state.laptop_ip.strip() + "/print_label", json={"url": deck_state.label_url, "printer": deck_state.shipping_row_text[deck_state.current_shipping_row][key - 5]})
             time.sleep(4)
 
         # Print the chosen shipping option

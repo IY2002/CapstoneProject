@@ -52,8 +52,8 @@ def demo():
 
     if data["status"] == "open":
         # Define document printers and label printers
-        docPrinters = ["Rollo"]
-        labelPrinters = ["Rollo"]
+        docPrinters = ["Rollo", "Epson"]
+        labelPrinters = ["Rollo", "Epson"]
         addDocs = data["addDocs"]
         boxSizes = data["boxSizes"]
 
