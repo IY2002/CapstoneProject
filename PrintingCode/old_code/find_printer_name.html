@@ -1,0 +1,21 @@
+<html>
+<script src="qz-tray.js"></script>
+<script>
+qz.websocket.connect().then(() => {
+    return qz.printers.find();
+}).then((found) => {
+    alert(found);
+    var config = qz.configs.create(found);
+    var data = [{
+        type: 'pixel',
+        format: 'pdf',
+        flavor: 'file',
+        data: 'D:/Capstone_Project/Sample 4x6 Label.pdf'
+    }];
+    //return qz.print(config, data);
+}).catch((e) => {
+    alert(e);
+});
+//Reference: https://www.youtube.com/watch?v=wKIY4gqkIFE
+</script>
+</html>
