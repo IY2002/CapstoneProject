@@ -23,12 +23,12 @@ def print_doc():
     # urllib.request.urlretrieve(url, 'D:/Capstone_Project/Sample 4x6 Label.pdf')
     printer = data['printer']
     doc_num = data['doc_num']
-    if doc_num == 1:
-        urllib.request.urlretrieve(url, 'D:/Capstone_Project/Additional file.pdf')
-    elif doc_num == 2:
-        urllib.request.urlretrieve(url, 'D:/Capstone_Project/Additional file.pdf')
+    if doc_num == 0:
+        urllib.request.urlretrieve('http://localhost:5005/invoice.pdf', 'D:/Capstone_Project/Additional file.pdf')
+    elif doc_num == 1:
+        urllib.request.urlretrieve('http://localhost:5005/thank_you_note.pdf', 'D:/Capstone_Project/Additional file.pdf')
     else:
-        urllib.request.urlretrieve(url, 'D:/Capstone_Project/Additional file.pdf')
+        urllib.request.urlretrieve('http://localhost:5005/logo.pdf', 'D:/Capstone_Project/Additional file.pdf')
     if printer == 'Epson':
         webbrowser.open('https://qz.shipitdone.com/ARK_Additional.html')  # EPSON_print_doc()
     else:
